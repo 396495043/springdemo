@@ -27,7 +27,7 @@ public class ControllerExceptionHandler {
     //返回的状态码
     @ResponseStatus(value=HttpStatus.NOT_FOUND)     //服务内部错误
     public Map<String,Object> handlerUserNotExistException(Exception ex){
-        Map<String,Object> result=new HashMap<String,Object>();
+        Map<String,Object> result=new HashMap();
         result.put("message", ex.getMessage());
         return result;
     }
