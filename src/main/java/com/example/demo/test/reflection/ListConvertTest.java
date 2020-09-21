@@ -19,5 +19,20 @@ public class ListConvertTest {
         List<String> list2 =  list.stream().map(String.class::cast).collect(Collectors.toList());
         System.out.println( list2);
 
+        test();
+
+    }
+
+    private static void test() {
+
+        ArrayList<String> list3 = new ArrayList<>();
+       // ArrayList<> list4 = new ArrayList<>();//不通过
+
+        ArrayList list2 = new ArrayList<String>(); // 允许 rawType 类型检查就是针对引用的
+        list2.add("1"); //编译通过
+        list2.add(1); //编译通过
+
+        List<String> a = new ArrayList<>();
+        a.add(new String());
     }
 }
