@@ -19,6 +19,7 @@ public class FunctionTest {
         HashMap hashMap = new HashMap();
         hashMap.put("5" ,"50");
         hashMap.computeIfAbsent("6" ,this::addZero);
+        hashMap.computeIfAbsent("6" ,a->6);
         Object o =   hashMap.computeIfPresent("6" ,this::addZero2);
         System.out.println(  o + " dd " + hashMap);
     }

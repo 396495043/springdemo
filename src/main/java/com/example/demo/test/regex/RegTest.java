@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class RegTest {
     public static void main(String[] args) {
         groupFindTest();
-        replace();
+        replaceAllByQuote();
 
     }
 // group ，用 （） ，需先 find ，再用 gourp 1 ，注意 贪婪还是懒惰模式
@@ -23,18 +23,18 @@ public class RegTest {
          Pattern p = Pattern.compile("\\[(.+?)\\]");
         Matcher match =  p.matcher(input);
         match.find();
-        String ss = match.group(1);
-        System.out.println(ss);
+        String found = match.group(1);
+        System.out.println("find Value " + found);
     }
 //replace 和  replaceALL ，只有 replaceAll 才 正则。
-    private static void replace() {
+    private static void replaceAllByQuote() {
         String input = " testaa=[cc] testbb=[cc]  " ;
         String quote = Pattern.quote("[cc]") ;
-        System.out.println(quote);
-        String ss = input.replaceAll(quote, "[DD]");
-        System.out.println(ss);
-        ss = ss.replace("[DD]", "[D22D]");
-        System.out.println(ss);
+        System.out.println("quote Value " +quote);
+        String replaced = input.replaceAll(quote, "[DD]");
+        System.out.println("replaced Value " + replaced);
+        replaced = replaced.replace("[DD]", "[D22D]");
+        System.out.println("replaced Value " +replaced);
     }
 
 }
