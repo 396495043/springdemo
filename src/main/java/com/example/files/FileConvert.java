@@ -2,9 +2,15 @@
 CONFIDENTIAL AND TRADE SECRET INFORMATION. No portion of this work may be copied, distributed, modified, or incorporated into any other media without EIS Group prior written consent.*/
 package com.example.files;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
+import com.google.common.io.Files;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /**
@@ -14,31 +20,44 @@ import java.util.ArrayList;
  * @since
  */
 public class FileConvert {
+    public static final String SPLIT_1 = "\r\n";
+    public static final String SPLIT_2 =  ";;";
+    public static final String SPLIT_3 = "||";
+    public static final String SPLIT_4 = "\r\n\r\n";
+
     public static void main(String[] args) throws Exception {
-        ArrayList<Question> questions = MyXMLParser.parser("");
-        writeJson(questions);
-        questions = LineParser.parser("");
-        writeJson(questions);
+        convertFile("D:\\temp\\qu.xml");
+        convertFile("D:\\temp\\s1.xml");
+        convertFile("D:\\temp\\s2.xml");
+        convertFile("D:\\temp\\s11.xml");
 
     }
 
-    private static void writeJson(ArrayList<Question> questions) {
-        JsonArray root = new JsonArray();
+    private static void convertFile(String fileName)  throws Exception {
+        ArrayList<Question> questions = MyXMLParser.parser(fileName);
+        writeData(questions,fileName);
+    }
+
+    private static void writeData(ArrayList<Question> questions, String fileName) throws Exception {
+        StringBuffer sb = new StringBuffer();
         for (Question question:questions) {
-            JsonObject questionJs = new JsonObject();
-            questionJs.addProperty("qes",question.question);
-            questionJs.addProperty("index",question.answerIndex);
-            if (question.answers  == null){
-                questionJs.addProperty("type",question.question);
-            }else{
-                JsonArray ansArray = new JsonArray();
-                for(String ans:question.answers){
-                    ansArray.add(ans);
-                }
-                questionJs.add("answerStr",ansArray);
+            String lin1 = ""+question.answerIndex ;
+            if (question.type > 0){
+                lin1 +=   SPLIT_2+  question.type ;
             }
-            root.add(questionJs);
+            sb.append(lin1);
+            String lin2 = "0" ;
+            if (question.answers != null){
+               lin2 = Joiner.on(SPLIT_2).join(question.answers);
+            }
+            sb.append(SPLIT_1);
+            sb.append(lin2);
+            sb.append(SPLIT_1);
+            sb.append(question.question);
+            sb.append(SPLIT_4);
         }
-        System.out.println( root.toString() );
+        Files.write(sb.toString() ,new File(fileName+"ss") , Charset.forName("GBK"));
     }
+
+
 }

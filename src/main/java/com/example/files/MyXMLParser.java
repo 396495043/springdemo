@@ -20,6 +20,7 @@ public class MyXMLParser {
     public static final String TAG = MyXMLParser.class.getSimpleName();
 
    static ArrayList<Question> parser(String fileName) throws Exception {
+       System.out.println(" fileName " + fileName );
         SAXReader reader = new SAXReader();
         //读取文件 转换成Document
         Document document = reader.read(new File(fileName));
@@ -31,8 +32,9 @@ public class MyXMLParser {
             Element eventEle = (Element) iter.next();
 
             Question question = new Question();
-            question.question = eventEle.attributeValue("qn");
-            question.answerIndex = parserInt(eventEle.attributeValue("ai"));
+            question.question = eventEle.attributeValue("lb");
+            System.out.println(eventEle.asXML() );
+            question.answerIndex = parserInt(eventEle.attributeValue("ai"))-1;
             String asValue = eventEle.attributeValue("as");
             if (asValue != null) {
                 question.answers = asValue.split(";");
@@ -50,6 +52,11 @@ public class MyXMLParser {
     }
 
     private static int parserInt(String ai) {
-        return Integer.parseInt(ai);
+        try {
+            return Integer.parseInt(ai);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return 0 ;
+        }
     }
 }
